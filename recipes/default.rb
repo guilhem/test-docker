@@ -16,3 +16,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+include_recipe "docker"
+
+cookbook_file "/tmp/Dockerfile-redis"
+
+docker_image "redis" do
+  tag "latest"
+  dockerfile "/tmp/Dockerfile-redis"
+  action :build
+end
+
+docker_container "run redis" do
+  image "redis"
+  command "/usr/bin/redis-server"
+  port 6379
+  detach true
+end
